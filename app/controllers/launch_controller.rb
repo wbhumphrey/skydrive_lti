@@ -1,6 +1,13 @@
 class LaunchController < ApplicationController
   include ActionController::Cookies
 
+  $microsoft_client = {
+      client_id: "044b1397-bc56-4db3-9197-5fabcc834e6a",
+      client_secret: "68znNygVFZbfPn+X+cEdAILu+LE/5Z2+3fvVxx7DmkI=",
+      guid: "00000003-0000-0ff1-ce00-000000000000",
+      client_domain: "instructure.sharepoint.com"
+  }
+
   $oauth_creds = {
       'test' => 'secret'
   }
@@ -58,7 +65,18 @@ class LaunchController < ApplicationController
             email: email
         )
     user.cleanup_api_keys
-    redirect_to "/?code=#{user.session_api_key.oauth_code}"
+
+    code = user.session_api_key.oauth_code
+    if user.skydrive_token
+      redirect_to "/?code=#{code}"
+    else
+      redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}?lti_code=#{code}&referrer=#{CGI::escape(request.referrer)}"
+      redirect_to Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri)
+    end
+  end
+
+  def microsoft_oauth
+    binding.pry
   end
 
   def backdoor_launch

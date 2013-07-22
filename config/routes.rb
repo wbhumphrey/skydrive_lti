@@ -10,6 +10,7 @@ Skydrive::Application.routes.draw do
   get 'launch' => 'launch#basic_launch'
   post 'launch' => 'launch#basic_launch'
   get 'backdoor' => 'launch#backdoor_launch'
+  post 'microsoft_oauth' => 'launch#microsoft_oauth'
 
   post 'oauth2/token' => 'api_keys#oauth2_token'
 

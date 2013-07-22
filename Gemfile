@@ -12,6 +12,8 @@ gem 'active_model_serializers'
 gem 'ims-lti', :git => 'https://github.com/instructure/ims-lti.git'
 gem 'zurb-foundation'
 gem 'compass'
+gem 'json'
+gem 'rest-client'
 
 group :development do
   gem 'guard-embertools'
