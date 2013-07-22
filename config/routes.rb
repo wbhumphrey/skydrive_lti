@@ -9,6 +9,7 @@ Skydrive::Application.routes.draw do
   #LTI launch paths
   get 'launch' => 'launch#basic_launch'
   post 'launch' => 'launch#basic_launch'
+  get 'backdoor' => 'launch#backdoor_launch'
 
   post 'oauth2/token' => 'api_keys#oauth2_token'
 

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :ensure_authenticated_user
+  before_filter :ensure_authenticated_user, except: [:create]
 
   # Returns list of users. This requires authorization
   def index

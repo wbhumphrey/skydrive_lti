@@ -10,6 +10,8 @@ gem 'sqlite3'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'active_model_serializers'
 gem 'ims-lti', :git => 'https://github.com/instructure/ims-lti.git'
+gem 'zurb-foundation'
+gem 'compass'
 
 group :development do
   gem 'guard-embertools'

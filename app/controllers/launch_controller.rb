@@ -60,4 +60,18 @@ class LaunchController < ApplicationController
     user.cleanup_api_keys
     redirect_to "/?code=#{user.session_api_key.oauth_code}"
   end
+
+  def backdoor_launch
+    email = params[:email] || 'ericb@instructure.com'
+    name = params[:name] || 'Eric Berry'
+    username = params[:username] || 'ericb'
+    user = User.where("email = ?", email).first ||
+        User.create(
+            name: name,
+            username: username,
+            email: email
+        )
+    user.cleanup_api_keys
+    redirect_to "/?code=#{user.session_api_key.oauth_code}"
+  end
 end

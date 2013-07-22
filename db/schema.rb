@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130710195819) do
+ActiveRecord::Schema.define(version: 20130722173006) do
 
   create_table "api_keys", force: true do |t|
     t.integer  "user_id"
@@ -25,6 +25,19 @@ ActiveRecord::Schema.define(version: 20130710195819) do
   add_index "api_keys", ["access_token"], name: "index_api_keys_on_access_token"
   add_index "api_keys", ["oauth_code"], name: "index_api_keys_on_oauth_code"
   add_index "api_keys", ["user_id"], name: "index_api_keys_on_user_id"
+
+  create_table "skydrive_tokens", force: true do |t|
+    t.integer  "user_id"
+    t.string   "token_type"
+    t.string   "access_token"
+    t.integer  "expires_in"
+    t.string   "refresh_token"
+    t.datetime "not_before"
+    t.datetime "expires_on"
+    t.string   "resource"
+  end
+
+  add_index "skydrive_tokens", ["user_id"], name: "index_skydrive_tokens_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "name"

@@ -1,0 +1,33 @@
+<ul class="breadcrumbs">
+  <li class="current">{{name}}</li>
+</ul>
+
+<div class="large-12 columns">
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Size (Kb)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each folders}}
+        <tr>
+          <td></td>
+          <td>[icon]</td>
+          <td colspan="2">{{name}}</td>
+        </tr>
+      {{/each}}
+      {{#each files}}
+        <tr>
+          <td></td>
+          <td>[icon]</td>
+          <td>{{name}}</td>
+          <td>{{size}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
