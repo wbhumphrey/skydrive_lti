@@ -9,7 +9,10 @@ module Skydrive
       options.each { |key, val| self.send("#{key}=", val) if self.respond_to?("#{key}=") }
     end
 
-    def oauth_authorize_redirect(redirect_uri, scope = 'Web.Write')
+    def oauth_authorize_redirect(redirect_uri, options = {})
+      scope = options[:scope] || 'Web.Write'
+      state = options[:state]
+
       redirect_params = {
           client_id: client_id,
           scope: scope,
@@ -18,7 +21,8 @@ module Skydrive
       }
 
       "https://#{client_domain}/_layouts/15/OAuthAuthorize.aspx?" +
-                   redirect_params.map{|k,v| "#{k}=#{CGI::escape(v)}"}.join('&')
+          redirect_params.map{|k,v| "#{k}=#{CGI::escape(v)}"}.join('&') +
+          (state ? "&state=#{state}" : "")
     end
 
     def get_token(redirect_uri, code)

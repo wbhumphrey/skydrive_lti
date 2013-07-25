@@ -2,8 +2,8 @@ class LaunchController < ApplicationController
   include ActionController::Cookies
 
   $microsoft_client = {
-      client_id: "044b1397-bc56-4db3-9197-5fabcc834e6a",
-      client_secret: "68znNygVFZbfPn+X+cEdAILu+LE/5Z2+3fvVxx7DmkI=",
+      client_id: "00a878a3-fde7-47a3-9c89-3c9912e6bb83",
+      client_secret: "MO2cbtapMB22kKEKqNsTDTVUN0vwS1vNjqaCG+NejaI=",
       guid: "00000003-0000-0ff1-ce00-000000000000",
       client_domain: "instructure.sharepoint.com"
   }
@@ -70,13 +70,34 @@ class LaunchController < ApplicationController
     if user.skydrive_token
       redirect_to "/?code=#{code}"
     else
-      redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}?lti_code=#{code}&referrer=#{CGI::escape(request.referrer)}"
-      redirect_to Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri)
+      redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
+      redirect_to Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri, state: code)
+    end
+  end
+
+  def skydrive_authorized
+    if current_user && current_user.skydrive_token && current_user.skydrive_token.expires_on > Time.now
+      render json: {}, status: 201
+    else
+      code = current_user.session_api_key.oauth_code
+      redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
+      auth_url = Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri, state: code)
+      render json: {auth_url: auth_url}, status: 401
     end
   end
 
   def microsoft_oauth
-    binding.pry
+    redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
+    result = Skydrive::Client.new($microsoft_client).get_token(redirect_uri, params['code'])
+    return "#{result['error']} - #{result['error_description']}" if result.key? 'error'
+
+    api_key = ApiKey.trade_oauth_code_for_access_token(params['state'])
+
+    result["not_before"] = Time.at result["not_before"].to_i
+    result["expires_on"] = Time.at result["expires_on"].to_i
+    api_key.user.skydrive_token = SkydriveToken.new(result)
+
+    redirect_to "/?code=#{params['state']}"
   end
 
   def backdoor_launch
@@ -90,6 +111,13 @@ class LaunchController < ApplicationController
             email: email
         )
     user.cleanup_api_keys
-    redirect_to "/?code=#{user.session_api_key.oauth_code}"
+
+    code = user.session_api_key.oauth_code
+    if user.skydrive_token
+      redirect_to "/?code=#{code}"
+    else
+      redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
+      redirect_to Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri, state: code)
+    end
   end
 end
