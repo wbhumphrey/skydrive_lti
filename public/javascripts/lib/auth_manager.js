@@ -3,17 +3,21 @@ var User = require('../models/user');
 var AuthManager = Ember.Object.extend({
 
   // Load the current user if we have a cookie or an oauth2 code
-  init: function() {
-    this._super();
+  // init: function() {
+  //   this._super();
 
-    var code = $.url().param('code');
+  //   var code = $.url().param('code');
 
-    if(!Ember.isEmpty(code)) {
-      this.authenticateWithCode(code);
-    } else {
-      this.authenticateWithCookie();
-    }
-  },
+  //   if(!Ember.isEmpty(code)) {
+  //     this.authenticateWithCode(code);
+  //   } else {
+  //     this.authenticateWithCookie();
+  //   }
+  // },
+
+  currentDisplayName: function() {
+    return this.get('apiKey.user.name') || 'None';
+  }.property('apiKey.user.name'),
 
   // Determine if the user is currently authenticated.
   isAuthenticated: function() {
@@ -21,6 +25,7 @@ var AuthManager = Ember.Object.extend({
   },
 
   authenticateWithCode: function(code) {
+    console.log("CODE");
     $.post('oauth2/token', {code: code})
       .always($.proxy(function(response) {
         if(!Ember.isEmpty(response.api_key)){

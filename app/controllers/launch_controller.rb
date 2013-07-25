@@ -73,7 +73,7 @@ class LaunchController < ApplicationController
         )
 
     user.skydrive_token = SkydriveToken.create(client_domain: client_domain) unless user.skydrive_token
-    user.skydrive_token.update_attribtes(client_domain: client_domain) unless user.skydrive_token.client_domain
+    user.skydrive_token.update_attributes(client_domain: client_domain) unless user.skydrive_token.client_domain
     user.cleanup_api_keys
 
     code = user.session_api_key.oauth_code
@@ -117,9 +117,9 @@ class LaunchController < ApplicationController
         )
     user.cleanup_api_keys
     user.skydrive_token = SkydriveToken.create(client_domain: "instructure.sharepoint.com") unless user.skydrive_token
-    user.skydrive_token.update_attribtes(client_domain: "instructure.sharepoint.com") unless user.skydrive_token.client_domain
+    user.skydrive_token.update_attributes(client_domain: "instructure.sharepoint.com") unless user.skydrive_token.client_domain
 
     code = user.session_api_key.oauth_code
-    redirect_to "/?code=#{code}"
+    redirect_to "/#/launch/#{code}"
   end
 end

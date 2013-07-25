@@ -10,7 +10,7 @@ var AuthenticatedRoute = Ember.Route.extend({
   redirectToLaunch: function(transition) {
     var launchController = this.controllerFor('launch');
     launchController.set('attemptedTransition', transition);
-    this.transitionTo('launch');
+    this.transitionTo('launch', 'na');
   },
 
   events: {
