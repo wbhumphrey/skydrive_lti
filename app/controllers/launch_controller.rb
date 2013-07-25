@@ -52,9 +52,14 @@ class LaunchController < ApplicationController
       return
     end
 
-    email = tp.lis_person_contact_email_primary
-    if !email
+
+    unless email = tp.lis_person_contact_email_primary
       render "Missing email information"
+      return
+    end
+
+    unless client_domain = tp.get_custom_param('sharepoint_client_domain')
+      render "Missing sharepoint client domain"
       return
     end
 
@@ -64,6 +69,9 @@ class LaunchController < ApplicationController
             username: tp.user_id,
             email: email
         )
+
+    user.skydrive_token = SkydriveToken.create(client_domain: client_domain) unless user.skydrive_token
+    user.skydrive_token.update_attribtes(client_domain: client_domain) unless user.skydrive_token.client_domain
     user.cleanup_api_keys
 
     code = user.session_api_key.oauth_code
@@ -76,7 +84,8 @@ class LaunchController < ApplicationController
   end
 
   def skydrive_authorized
-    if current_user && current_user.skydrive_token && current_user.skydrive_token.expires_on > Time.now
+    binding.pry
+    if current_user && current_user.valid_skydrive_token?
       render json: {}, status: 201
     else
       code = current_user.session_api_key.oauth_code
@@ -88,14 +97,11 @@ class LaunchController < ApplicationController
 
   def microsoft_oauth
     redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
-    result = Skydrive::Client.new($microsoft_client).get_token(redirect_uri, params['code'])
-    return "#{result['error']} - #{result['error_description']}" if result.key? 'error'
+    results = Skydrive::Client.new($microsoft_client).get_token(redirect_uri, params['code'])
+    return "#{results['error']} - #{results['error_description']}" if results.key? 'error'
 
     api_key = ApiKey.trade_oauth_code_for_access_token(params['state'])
-
-    result["not_before"] = Time.at result["not_before"].to_i
-    result["expires_on"] = Time.at result["expires_on"].to_i
-    api_key.user.skydrive_token = SkydriveToken.new(result)
+    api_key.user.skydrive_token.update_attributes(results)
 
     redirect_to "/#/oauth/callback"
   end
@@ -111,6 +117,8 @@ class LaunchController < ApplicationController
             email: email
         )
     user.cleanup_api_keys
+    user.skydrive_token = SkydriveToken.create(client_domain: "instructure.sharepoint.com") unless user.skydrive_token
+    user.skydrive_token.update_attribtes(client_domain: "instructure.sharepoint.com") unless user.skydrive_token.client_domain
 
     code = user.session_api_key.oauth_code
     # if user.skydrive_token

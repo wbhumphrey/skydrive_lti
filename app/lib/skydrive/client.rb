@@ -26,18 +26,7 @@ module Skydrive
     end
 
     def get_token(redirect_uri, code)
-      #401 sharepoint challange to get the realm
-      resource = RestClient::Resource.new "https://#{client_domain}/_vti_bin/client.svc/",
-                                          {headers: {'Authorization' => 'Bearer'}}
-      www_authenticate = {}
-      resource.get do |response, request, result|
-        response.headers[:www_authenticate].scan(/[\w ]*="[^"]*"/).each do |attribute|
-          attribute = attribute.split('=')
-          www_authenticate[attribute.first] = attribute.last.delete('"')
-        end
-      end
-
-      realm = www_authenticate["Bearer realm"]
+      realm = self.get_realm
       endpoint = "https://accounts.accesscontrol.windows.net/#{realm}/tokens/OAuth/2"
 
       options = {
@@ -51,10 +40,48 @@ module Skydrive
       }
 
       RestClient.post endpoint, options do |response, request, result|
-        json = JSON.parse(response)
-        token = json['access_token'] if json.key? 'access_token'
-        json
+        format_results(JSON.parse(response))
       end
+    end
+
+    def refresh_token(refresh_token)
+      realm = self.get_realm
+      endpoint = "https://accounts.accesscontrol.windows.net/#{realm}/tokens/OAuth/2"
+
+      options = {
+          content_type: 'application/x-www-form-urlencoded',
+          client_id: "#{client_id}@#{realm}",
+          client_secret: client_secret,
+          refresh_token: refresh_token,
+          grant_type: 'refresh_token',
+          resource: "#{guid}/#{client_domain}@#{realm}",
+      }
+
+      RestClient.post endpoint, options do |response, request, result|
+        format_results(JSON.parse(response))
+      end
+    end
+
+    def format_results(results)
+      results["expires_in"] = results["expires_in"].to_i
+      results["not_before"] = Time.at results["not_before"].to_i
+      results["expires_on"] = Time.at results["expires_on"].to_i
+      results
+    end
+
+    def get_realm
+      #401 sharepoint challenge to get the realm
+      resource = RestClient::Resource.new "https://#{client_domain}/_vti_bin/client.svc/",
+                                          {headers: {'Authorization' => 'Bearer'}}
+      www_authenticate = {}
+      resource.get do |response, request, result|
+        response.headers[:www_authenticate].scan(/[\w ]*="[^"]*"/).each do |attribute|
+          attribute = attribute.split('=')
+          www_authenticate[attribute.first] = attribute.last.delete('"')
+        end
+      end
+
+      www_authenticate["Bearer realm"]
     end
 
     def api_call()

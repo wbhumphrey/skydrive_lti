@@ -13,4 +13,8 @@ class User < ActiveRecord::Base
   def cleanup_api_keys
     api_keys.inactive.each(&:destroy)
   end
+
+  def valid_skydrive_token?
+    self.skydrive_token && self.skydrive_token.access_token
+  end
 end
