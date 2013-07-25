@@ -5555,38 +5555,47 @@ table tfoot tr td {
 /* Blue: 094AB2 */
 /* line 53, ../../foundation/sass/app.scss */
 body {
-  background: #272822;
-}
-
-/* line 57, ../../foundation/sass/app.scss */
-#wrapper {
   background-color: #fff;
-  width: 630px;
-  height: 500px;
-  overflow: hidden;
-  margin: 50px auto;
 }
 
-/* line 65, ../../foundation/sass/app.scss */
+/* line 58, ../../foundation/sass/app.scss */
+#wrapper {
+  padding-top: 100px;
+}
+
+/* line 67, ../../foundation/sass/app.scss */
 .top-bar {
+  z-index: 10;
   padding: 0 10px;
   margin-bottom: 0px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
-/* line 70, ../../foundation/sass/app.scss */
+/* line 77, ../../foundation/sass/app.scss */
 ul.breadcrumbs {
+  -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  position: fixed;
+  top: 45px;
+  left: 0;
+  right: 0;
   padding: 0 10px;
   border-top: 0px;
   border-right: 0px;
   border-left: 0px;
 }
-/* line 75, ../../foundation/sass/app.scss */
+/* line 90, ../../foundation/sass/app.scss */
 ul.breadcrumbs li {
   line-height: 32px;
   white-space: nowrap;
 }
 
-/* line 81, ../../foundation/sass/app.scss */
+/* line 96, ../../foundation/sass/app.scss */
 .gravatar-image {
   position: relative;
   top: -2px;

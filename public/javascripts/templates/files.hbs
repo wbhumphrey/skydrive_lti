@@ -1,4 +1,4 @@
-<nav class="top-bar">
+<nav class="top-bar sticky">
   <img src="https://p.sfx.ms/images/SkyDriveLogoLight.png" />
   <span class="right">{{gravatar-image email=currentUser.email s="30"}}</span>
 </nav>
@@ -10,7 +10,7 @@
 
 {{else}}
 
-  <ul class="breadcrumbs">
+  <ul class="breadcrumbs sticky">
     <li><a href="#">Home</a></li>
     {{#if parentFolder}}
       FOO
@@ -19,29 +19,125 @@
   </ul>
 
   <div class="large-12 columns">
-    <table>
+    <table class="large-12">
       <thead>
         <tr>
-          <th></th>
-          <th>Type</th>
           <th>Name</th>
+          <th>Kind</th>
           <th>Size (Kb)</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {{#each folders}}
           <tr>
+            <td>[icon] {{name}}</td>
+            <td>folder</td>
+            <td>-</td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
             <td></td>
-            <td>[icon]</td>
-            <td colspan="2">{{name}}</td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+                {{#each files}}
+          <tr>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
+            <td>{{size}}</td>
+            <td></td>
           </tr>
         {{/each}}
         {{#each files}}
           <tr>
-            <td></td>
-            <td>[icon]</td>
-            <td>{{name}}</td>
+            <td>[icon] {{name}}</td>
+            <td>{{kind}} <small>{{suffix}}</td>
             <td>{{size}}</td>
+            <td></td>
           </tr>
         {{/each}}
       </tbody>
