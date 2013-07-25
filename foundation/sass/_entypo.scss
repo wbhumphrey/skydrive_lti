@@ -1,0 +1,25 @@
+// Font Path
+// --------------------------
+
+@font-face {
+  font-family: 'Entypo';
+  src: url('../font/entypo-webfont.eot');
+  src: url('../font/entypo-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../font/entypo-webfont.woff') format('woff'),
+       url('../font/entypo-webfont.ttf') format('truetype'),
+       url('../font/entypo-webfont.svg#entyporegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+// Variables
+// --------------------------
+
+$doc: "\fU+1F4F0";
+
+.icon-doc { 
+  font-family: 'Entypo';
+  -webkit-font-smoothing: antialiased;
+  *margin-right: .3em; // fixes ie7 issues
+  content: $doc;
+}

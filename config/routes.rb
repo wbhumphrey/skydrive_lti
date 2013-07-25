@@ -2,6 +2,7 @@ Skydrive::Application.routes.draw do
   scope "api/v1" do
     resources :users, except: [:new, :edit]
     resources :files, only: [:index]
+    get 'skydrive_authorized' => 'launch#skydrive_authorized'
   end
 
   post 'session' => 'session#create'
@@ -11,7 +12,7 @@ Skydrive::Application.routes.draw do
   post 'launch' => 'launch#basic_launch'
   get 'backdoor' => 'launch#backdoor_launch'
   get 'microsoft_oauth' => 'launch#microsoft_oauth'
-  get 'skydrive_authorized' => 'launch#skydrive_authorized'
+  
 
   post 'oauth2/token' => 'api_keys#oauth2_token'
 

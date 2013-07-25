@@ -67,12 +67,12 @@ class LaunchController < ApplicationController
     user.cleanup_api_keys
 
     code = user.session_api_key.oauth_code
-    if user.skydrive_token
+    # if user.skydrive_token
       redirect_to "/?code=#{code}"
-    else
-      redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
-      redirect_to Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri, state: code)
-    end
+    # else
+    #   redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
+    #   redirect_to Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri, state: code)
+    # end
   end
 
   def skydrive_authorized
@@ -82,7 +82,7 @@ class LaunchController < ApplicationController
       code = current_user.session_api_key.oauth_code
       redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
       auth_url = Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri, state: code)
-      render json: {auth_url: auth_url}, status: 401
+      render text: auth_url, status: 401
     end
   end
 
@@ -97,7 +97,7 @@ class LaunchController < ApplicationController
     result["expires_on"] = Time.at result["expires_on"].to_i
     api_key.user.skydrive_token = SkydriveToken.new(result)
 
-    redirect_to "/?code=#{params['state']}"
+    redirect_to "/#/oauth/callback"
   end
 
   def backdoor_launch
@@ -113,11 +113,11 @@ class LaunchController < ApplicationController
     user.cleanup_api_keys
 
     code = user.session_api_key.oauth_code
-    if user.skydrive_token
+    # if user.skydrive_token
       redirect_to "/?code=#{code}"
-    else
-      redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
-      redirect_to Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri, state: code)
-    end
+    # else
+    #   redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
+    #   redirect_to Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri, state: code)
+    # end
   end
 end

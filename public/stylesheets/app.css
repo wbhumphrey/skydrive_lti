@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'Entypo';
+  src: url("../font/entypo-webfont.eot");
+  src: url("../font/entypo-webfont.eot?#iefix") format("embedded-opentype"), url("../font/entypo-webfont.woff") format("woff"), url("../font/entypo-webfont.ttf") format("truetype"), url("../font/entypo-webfont.svg#entyporegular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* line 20, ../../foundation/sass/_entypo.scss */
+.icon-doc {
+  font-family: 'Entypo';
+  -webkit-font-smoothing: antialiased;
+  *margin-right: .3em;
+  content: "\fU+1F4F0";
+}
+
 /* line 4, ../../../../../../.rvm/gems/ruby-1.9.3-p392/gems/zurb-foundation-4.0.9/scss/foundation/components/_global.scss */
 *,
 *:before,

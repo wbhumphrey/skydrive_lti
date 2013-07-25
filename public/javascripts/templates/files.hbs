@@ -1,33 +1,44 @@
-<ul class="breadcrumbs">
-  <li class="current">{{name}}</li>
-</ul>
+{{#if authRedirectUrl}}
 
-<div class="large-12 columns">
-  <table>
-    <thead>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Size (Kb)</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each folders}}
+  <p>You must first log into your Sky Drive account.</p>
+  <button {{action "openAuthPopup"}}>Login</button>
+
+{{else}}
+
+  <ul class="breadcrumbs">
+    <li class="current">{{name}}</li>
+  </ul>
+
+  <i class="icon-doc">asdf</i>
+
+  <div class="large-12 columns">
+    <table>
+      <thead>
         <tr>
-          <td></td>
-          <td>[icon]</td>
-          <td colspan="2">{{name}}</td>
+          <th></th>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Size (Kb)</th>
         </tr>
-      {{/each}}
-      {{#each files}}
-        <tr>
-          <td></td>
-          <td>[icon]</td>
-          <td>{{name}}</td>
-          <td>{{size}}</td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        {{#each folders}}
+          <tr>
+            <td></td>
+            <td>[icon]</td>
+            <td colspan="2">{{name}}</td>
+          </tr>
+        {{/each}}
+        {{#each files}}
+          <tr>
+            <td></td>
+            <td>[icon]</td>
+            <td>{{name}}</td>
+            <td>{{size}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  
+{{/if}}
