@@ -1,6 +1,6 @@
 var LaunchRoute = Ember.Route.extend({
   setupController: function() {
-    var params = App.Router.router.paramsForHandler('launch');
+    var params = this.context;
     var code = params.code;
     if (code === 'na') {
       code = null;

@@ -5585,3 +5585,10 @@ ul.breadcrumbs li {
   line-height: 32px;
   white-space: nowrap;
 }
+
+/* line 81, ../../foundation/sass/app.scss */
+.gravatar-image {
+  position: relative;
+  top: -2px;
+  border: 1px solid #fff;
+}

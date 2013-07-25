@@ -1,6 +1,7 @@
 var FilesController = Ember.ObjectController.extend({
   authRedirectUrl: null,
   popupWindow: null,
+  parentFolder: null,
 
   currentUser: function() {
     return App.AuthManager.get('apiKey.user');

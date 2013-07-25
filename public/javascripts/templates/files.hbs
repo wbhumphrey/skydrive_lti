@@ -1,8 +1,6 @@
 <nav class="top-bar">
   <img src="https://p.sfx.ms/images/SkyDriveLogoLight.png" />
-  <ul class="right">
-    <li><label>{{gravatar-image email=currentUser.email s="30"}} {{currentUser.name}}</label></li>
-  </ul>
+  <span class="right">{{gravatar-image email=currentUser.email s="30"}}</span>
 </nav>
 
 {{#if authRedirectUrl}}
@@ -14,11 +12,11 @@
 
   <ul class="breadcrumbs">
     <li><a href="#">Home</a></li>
-    <li><a href="#">Features</a></li>
+    {{#if parentFolder}}
+      FOO
+    {{/if}}
     <li class="current">{{name}}</li>
   </ul>
-
-  <i class="icon-doc">asdf</i>
 
   <div class="large-12 columns">
     <table>
