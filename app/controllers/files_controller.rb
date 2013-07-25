@@ -14,8 +14,6 @@ class FilesController < ApplicationController
   end
 
   def index
-    binding.pry
-
     render json: {
       name: 'My Documents',
       folders: [

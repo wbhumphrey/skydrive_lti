@@ -1,6 +1,8 @@
 class LaunchController < ApplicationController
   include ActionController::Cookies
 
+  before_filter :ensure_authenticated_user, only: :skydrive_authorized
+
   $microsoft_client = {
       client_id: "00a878a3-fde7-47a3-9c89-3c9912e6bb83",
       client_secret: "MO2cbtapMB22kKEKqNsTDTVUN0vwS1vNjqaCG+NejaI=",
@@ -75,33 +77,30 @@ class LaunchController < ApplicationController
     user.cleanup_api_keys
 
     code = user.session_api_key.oauth_code
-    # if user.skydrive_token
-      redirect_to "/?code=#{code}"
-    # else
-    #   redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
-    #   redirect_to Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri, state: code)
-    # end
+    redirect_to "/?code=#{code}"
   end
 
   def skydrive_authorized
-    binding.pry
-    if current_user && current_user.valid_skydrive_token?
+    if current_user.valid_skydrive_token?
       render json: {}, status: 201
     else
       code = current_user.session_api_key.oauth_code
+      client = Skydrive::Client.new(SHAREPOINT.merge(client_domain: current_user.skydrive_token.client_domain))
       redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
-      auth_url = Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri, state: code)
+      auth_url = client.oauth_authorize_redirect(redirect_uri, state: code)
       render text: auth_url, status: 401
     end
   end
 
   def microsoft_oauth
+    user = ApiKey.trade_oauth_code_for_access_token(params['state']).user
+
+    client = Skydrive::Client.new(SHAREPOINT.merge(client_domain: user.skydrive_token.client_domain))
     redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
-    results = Skydrive::Client.new($microsoft_client).get_token(redirect_uri, params['code'])
+    results = client.get_token(redirect_uri, params['code'])
     return "#{results['error']} - #{results['error_description']}" if results.key? 'error'
 
-    api_key = ApiKey.trade_oauth_code_for_access_token(params['state'])
-    api_key.user.skydrive_token.update_attributes(results)
+    user.skydrive_token.update_attributes(results)
 
     redirect_to "/#/oauth/callback"
   end
@@ -121,11 +120,6 @@ class LaunchController < ApplicationController
     user.skydrive_token.update_attribtes(client_domain: "instructure.sharepoint.com") unless user.skydrive_token.client_domain
 
     code = user.session_api_key.oauth_code
-    # if user.skydrive_token
-      redirect_to "/?code=#{code}"
-    # else
-    #   redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
-    #   redirect_to Skydrive::Client.new($microsoft_client).oauth_authorize_redirect(redirect_uri, state: code)
-    # end
+    redirect_to "/?code=#{code}"
   end
 end
