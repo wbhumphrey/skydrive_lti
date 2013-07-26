@@ -61,5 +61,8 @@ module Skydrive
 
     # Add cookie support
     config.middleware.insert_after ActiveRecord::QueryCache, ActionDispatch::Cookies
+
+    #render in iframe
+    config.action_dispatch.default_headers.delete('X-Frame-Options')
   end
 end

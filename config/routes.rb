@@ -13,6 +13,8 @@ Skydrive::Application.routes.draw do
   get 'backdoor' => 'launch#backdoor_launch'
   get 'microsoft_oauth' => 'launch#microsoft_oauth'
 
+  get 'config' => 'launch#xml_config'
+
   post 'oauth2/token' => 'api_keys#oauth2_token'
 
   # The priority is based upon order of creation:

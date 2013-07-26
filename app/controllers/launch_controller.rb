@@ -47,14 +47,13 @@ class LaunchController < ApplicationController
       return
     end
 
-
     unless email = tp.lis_person_contact_email_primary
-      render "Missing email information"
+      render text: "Missing email information"
       return
     end
 
     unless client_domain = tp.get_custom_param('sharepoint_client_domain')
-      render "Missing sharepoint client domain"
+      render text: "Missing sharepoint client domain"
       return
     end
 
@@ -116,5 +115,29 @@ class LaunchController < ApplicationController
 
     code = user.session_api_key.oauth_code
     redirect_to "/#/launch/#{code}"
+  end
+
+  def xml_config
+    # ie http://localhost:9393/config?sharepoint_client_domain=instructure.sharepoint.com
+    url = "#{request.protocol}#{request.host_with_port}#{launch_path}"
+    title = "Skydrive Pro"
+    tc = IMS::LTI::ToolConfig.new(:title => title, :launch_url => url)
+    tc.extend IMS::LTI::Extensions::Canvas::ToolConfig
+    tc.description = 'Allows you to pull in documents from Skydrive Pro to canvas'
+    tc.canvas_privacy_public!
+    tc.canvas_domain!(request.host)
+    tc.canvas_icon_url!("#{request.protocol}#{request.host_with_port}/images/skydrive_icon.png")
+    tc.canvas_selector_dimensions!(700,600)
+    tc.canvas_text!(title)
+    tc.canvas_homework_submission!
+    tc.canvas_editor_button!
+    tc.canvas_resource_selection!
+    tc.canvas_account_navigation!
+    tc.canvas_course_navigation!
+    tc.canvas_user_navigation!
+    tc.set_ext_param(
+        IMS::LTI::Extensions::Canvas::ToolConfig::PLATFORM, :custom_fields,
+        {sharepoint_client_domain: params['sharepoint_client_domain']})
+    render xml: tc.to_xml
   end
 end
