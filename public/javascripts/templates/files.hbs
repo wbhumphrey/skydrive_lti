@@ -48,7 +48,7 @@
           </tr>
         {{/each}}
         {{#each files}}
-          <tr>
+          <tr {{bindAttr class="is_embeddable::disabled"}}>
             <td><img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{name}}</span></td>
             <td>{{kind}} <small>{{suffix}}</td>
             <td>{{size}}</td>

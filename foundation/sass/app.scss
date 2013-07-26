@@ -102,4 +102,16 @@ ul.breadcrumbs {
     position: relative;
     top: 5px;
   }
+  a {
+    text-decoration: underline;
+  }
+  tr.disabled td {
+    color: #ccc;
+    a {
+      color: #ccc;
+    }
+    .button {
+      display: none;
+    } 
+  }
 }

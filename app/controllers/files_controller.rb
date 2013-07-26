@@ -30,6 +30,7 @@ class FilesController < ApplicationController
             kind: 'document',
             suffix: 'docx',
             size: 18290,
+            is_embeddable: true,
             url: 'https://instructure-my.sharepoint.com/personal/ericb_instructure_onmicrosoft_com/Documents/Shared with Everyone/Test.docx'
           }
         ]
@@ -53,6 +54,7 @@ class FilesController < ApplicationController
                 kind: 'document',
                 suffix: 'docx',
                 size: 18290,
+                is_embeddable: true,
                 url: 'https://instructure-my.sharepoint.com/personal/ericb_instructure_onmicrosoft_com/Documents/Shared with Everyone/Test.docx'
               }
             ]
@@ -66,6 +68,7 @@ class FilesController < ApplicationController
             kind: 'document',
             suffix: 'pdf',
             size: 294536,
+            is_embeddable: true,
             url: 'https://instructure-my.sharepoint.com/personal/personal/ericb_instructure_onmicrosoft_com/Documents/TerryMooreTranscript04042013.pdf'
           },
           {
@@ -75,6 +78,7 @@ class FilesController < ApplicationController
             kind: 'image',
             suffix: 'eps',
             size: 423139,
+            is_embeddable: false,
             url: 'https://instructure-my.sharepoint.com/personal/personal/ericb_instructure_onmicrosoft_com/Documents/UtahJS-Logo.eps'
           }
         ]

@@ -5599,3 +5599,19 @@ ul.breadcrumbs li {
   position: relative;
   top: 5px;
 }
+/* line 105, ../../foundation/sass/app.scss */
+#files-table a {
+  text-decoration: underline;
+}
+/* line 108, ../../foundation/sass/app.scss */
+#files-table tr.disabled td {
+  color: #ccc;
+}
+/* line 110, ../../foundation/sass/app.scss */
+#files-table tr.disabled td a {
+  color: #ccc;
+}
+/* line 113, ../../foundation/sass/app.scss */
+#files-table tr.disabled td .button {
+  display: none;
+}
