@@ -77,7 +77,7 @@ class LaunchController < ApplicationController
     user.cleanup_api_keys
 
     code = user.session_api_key.oauth_code
-    redirect_to "/?code=#{code}"
+    redirect_to "/#/launch/#{code}"
   end
 
   def skydrive_authorized

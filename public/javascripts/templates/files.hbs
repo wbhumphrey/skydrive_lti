@@ -5,14 +5,22 @@
 
 {{#if authRedirectUrl}}
 
-  <p>You must first log into your Sky Drive account.</p>
-  <button {{action "openAuthPopup"}}>Login</button>
+  <ul class="breadcrumbs">
+    <li>&nbsp;</li>
+  </ul>
+
+  <p class="text-center">You must first log into your Sky Drive account.</p>
+  <div class="text-center"><button {{action "openAuthPopup"}}>Login</button></div>
 
 {{else}}
 
   <ul class="breadcrumbs">
     <li class="unavailable"><a href="#">{{currentUser.name}}</a></li>
-    <li><a href="a">{{name}}</a></li>
+    {{#if parent_folder}}
+      <li>
+        {{#linkTo 'files' parent_folder}}&hellip;{{/linkTo}}
+      </li>
+    {{/if}}
     <li class="current"><a href="#">{{name}}</a></li>
   </ul>
 
@@ -30,9 +38,9 @@
         {{#each folders}}
           <tr>
             <td>
-              {{#linkTo 'files'}}
-                <img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{name}}</span>
-              {{/linkTo}}
+            {{#linkTo 'files' this}}
+              <img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{name}}</span>
+            {{/linkTo}}
             </td>
             <td>folder</td>
             <td>-</td>

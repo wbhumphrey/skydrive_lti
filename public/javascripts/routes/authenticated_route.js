@@ -5,11 +5,7 @@ var AuthenticatedRoute = Ember.Route.extend({
     }
   },
 
-  // Redirect to the login page and store the current transition so we can
-  // run it again after login
   redirectToLaunch: function(transition) {
-    var launchController = this.controllerFor('launch');
-    launchController.set('attemptedTransition', transition);
     this.transitionTo('launch', 'na');
   },
 
