@@ -6,10 +6,15 @@ class FilesController < ApplicationController
     head :unauthorized unless current_user.valid_skydrive_token?
 
     if current_user.skydrive_token.not_before > Time.now
-      client = Skydrive::Client.new(SHAREPOINT.merge(client_domain: current_user.skydrive_token.client_domain))
       results = client.refresh_token(current_user.skydrive_token.refresh_token)
       current_user.skydrive_token.update_attributes(results)
     end
+  end
+
+  def client
+    @client ||= Skydrive::Client.new(SHAREPOINT.merge(
+                     client_domain: current_user.skydrive_token.client_domain,
+                     token: current_user.skydrive_token.access_token))
   end
 
   def index
