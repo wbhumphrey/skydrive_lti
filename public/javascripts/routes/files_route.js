@@ -10,7 +10,6 @@ var FilesRoute = AuthenticatedRoute.extend({
   },
 
   setupController: function(controller, model) {
-    console.log(model);
     var guid = model.guid;
     var skydriveAuthorized = Ember.$.getJSON('/api/v1/skydrive_authorized').then(
       function() {

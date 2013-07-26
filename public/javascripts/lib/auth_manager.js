@@ -25,7 +25,6 @@ var AuthManager = Ember.Object.extend({
   },
 
   authenticateWithCode: function(code) {
-    console.log("CODE");
     $.post('oauth2/token', {code: code})
       .always($.proxy(function(response) {
         if(!Ember.isEmpty(response.api_key)){

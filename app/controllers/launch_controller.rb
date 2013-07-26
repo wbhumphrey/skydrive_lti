@@ -3,13 +3,6 @@ class LaunchController < ApplicationController
 
   before_filter :ensure_authenticated_user, only: :skydrive_authorized
 
-  $microsoft_client = {
-      client_id: "00a878a3-fde7-47a3-9c89-3c9912e6bb83",
-      client_secret: "MO2cbtapMB22kKEKqNsTDTVUN0vwS1vNjqaCG+NejaI=",
-      guid: "00000003-0000-0ff1-ce00-000000000000",
-      client_domain: "instructure.sharepoint.com"
-  }
-
   $oauth_creds = {
       'test' => 'secret'
   }
@@ -99,6 +92,8 @@ class LaunchController < ApplicationController
     redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
     results = client.get_token(redirect_uri, params['code'])
     return "#{results['error']} - #{results['error_description']}" if results.key? 'error'
+
+    results.merge!(personal_url: client.get_user['PersonalUrl'])
 
     user.skydrive_token.update_attributes(results)
 

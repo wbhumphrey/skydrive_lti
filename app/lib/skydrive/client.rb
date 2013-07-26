@@ -10,7 +10,7 @@ module Skydrive
     end
 
     def oauth_authorize_redirect(redirect_uri, options = {})
-      scope = options[:scope] || 'Web.Write'
+      scope = options[:scope] || 'Web.Read AllSites.Write AllProfiles.Read'
       state = options[:state]
 
       redirect_params = {
@@ -40,7 +40,9 @@ module Skydrive
       }
 
       RestClient.post endpoint, options do |response, request, result|
-        format_results(JSON.parse(response))
+        results = format_results(JSON.parse(response))
+        self.token = results['access_token']
+        results
       end
     end
 
@@ -58,7 +60,9 @@ module Skydrive
       }
 
       RestClient.post endpoint, options do |response, request, result|
-        format_results(JSON.parse(response))
+        results = format_results(JSON.parse(response))
+        self.token = results['access_token']
+        results
       end
     end
 
@@ -84,8 +88,15 @@ module Skydrive
       www_authenticate["Bearer realm"]
     end
 
-    def api_call()
-      RestClient.get "https://apis.live.net/v5.0/me/skydrive?access_token=#{token}"
+    def api_call(url)
+      JSON.parse(RestClient.get url, {
+          'Authorization' => "Bearer #{token}",
+          "Accept" => "application/json; odata=verbose"
+      })["d"]
+    end
+
+    def get_user
+      api_call("https://#{client_domain}/_api/SP.UserProfiles.PeopleManager/GetMyProperties")
     end
   end
 end
