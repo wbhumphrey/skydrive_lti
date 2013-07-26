@@ -1,4 +1,4 @@
-<nav class="top-bar sticky">
+<nav class="top-bar">
   <img src="https://p.sfx.ms/images/SkyDriveLogoLight.png" />
   <span class="right">{{gravatar-image email=currentUser.email s="30"}}</span>
 </nav>
@@ -10,16 +10,14 @@
 
 {{else}}
 
-  <ul class="breadcrumbs sticky">
-    <li><a href="#">Home</a></li>
-    {{#if parentFolder}}
-      FOO
-    {{/if}}
-    <li class="current">{{name}}</li>
+  <ul class="breadcrumbs">
+    <li class="unavailable"><a href="#">{{currentUser.name}}</a></li>
+    <li><a href="a">{{name}}</a></li>
+    <li class="current"><a href="#">{{name}}</a></li>
   </ul>
 
   <div class="large-12 columns">
-    <table class="large-12">
+    <table id="files-table" style="width: 100%;">
       <thead>
         <tr>
           <th>Name</th>
@@ -31,113 +29,22 @@
       <tbody>
         {{#each folders}}
           <tr>
-            <td>[icon] {{name}}</td>
+            <td>
+              {{#linkTo 'files'}}
+                <img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{name}}</span>
+              {{/linkTo}}
+            </td>
             <td>folder</td>
             <td>-</td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
-          </tr>
-        {{/each}}
-                {{#each files}}
-          <tr>
-            <td>[icon] {{name}}</td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td></td>
+            <td>&nbsp;</td>
           </tr>
         {{/each}}
         {{#each files}}
           <tr>
-            <td>[icon] {{name}}</td>
+            <td><img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{name}}</span></td>
             <td>{{kind}} <small>{{suffix}}</td>
             <td>{{size}}</td>
-            <td></td>
+            <td class="text-right"><button {{action "attach" this}} class="small button"><i class="icon-signin icon-rotate-90 icon-large"></i></button></td>
           </tr>
         {{/each}}
       </tbody>

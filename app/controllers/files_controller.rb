@@ -19,9 +19,11 @@ class FilesController < ApplicationController
       folders: [
         {
           name: 'Shared with Everyone',
+          icon: '/images/icon-folder.png',
           folders: [],
           files: [
             {
+              icon: '/images/icon-doc.png',
               name: 'Test.docx',
               kind: 'document',
               suffix: 'docx',
@@ -33,6 +35,7 @@ class FilesController < ApplicationController
       ],
       files: [
         {
+          icon: '/images/icon-pdf.png',
           name: 'TerryMooreTranscript.pdf',
           kind: 'document',
           suffix: 'pdf',
@@ -40,6 +43,7 @@ class FilesController < ApplicationController
           url: 'https://instructure-my.sharepoint.com/personal/personal/ericb_instructure_onmicrosoft_com/Documents/TerryMooreTranscript04042013.pdf'
         },
         {
+          icon: '/images/icon-file.png',
           name: 'UtahJS-Logo.eps',
           kind: 'image',
           suffix: 'eps',

@@ -10,6 +10,10 @@ var FilesController = Ember.ObjectController.extend({
   openAuthPopup: function() {
     var popup = window.open(this.get('authRedirectUrl'), 'auth', 'width=755,height=500');
     this.set('popupWindow', popup);
+  },
+
+  attach: function(f) {
+    alert("You will now attach this file: " + f.name);
   }
 });
 
