@@ -118,7 +118,7 @@ class LaunchController < ApplicationController
   end
 
   def xml_config
-    # ie http://localhost:9393/config?sharepoint_client_domain=instructure.sharepoint.com
+    # ie http://localhost:9393/config?sharepoint_client_domain=instructure-my.sharepoint.com
     url = "#{request.protocol}#{request.host_with_port}#{launch_path}"
     title = "Skydrive Pro"
     tc = IMS::LTI::ToolConfig.new(:title => title, :launch_url => url)

@@ -43,10 +43,17 @@ GEM
     chunky_png (1.2.8)
     coderay (1.0.9)
     colorize (0.5.8)
+    columnize (0.3.6)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
+    debugger (1.6.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.1)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.3)
     erubis (2.7.0)
     ffi (1.9.0)
     formatador (0.2.4)
@@ -75,6 +82,7 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.1)
     mime-types (1.23)
+    mimemagic (0.2.1)
     minitest (4.7.5)
     multi_json (1.7.7)
     oauth (0.4.7)
@@ -83,6 +91,9 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
+    pry-debugger (0.2.2)
+      debugger (~> 1.3)
+      pry (~> 0.9.10)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -147,7 +158,9 @@ DEPENDENCIES
   guard-embertools
   ims-lti!
   json
+  mimemagic
   pry
+  pry-debugger
   rails (= 4)
   rails-api
   rest-client

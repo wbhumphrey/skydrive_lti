@@ -14,10 +14,12 @@ gem 'zurb-foundation'
 gem 'compass'
 gem 'json'
 gem 'rest-client'
+gem 'mimemagic'
 
-group :development do
+group :development, :test do
   gem 'guard-embertools'
   gem 'pry', require: 'pry'
+  gem 'pry-debugger'
 end
 
 # To use Jbuilder templates for JSON

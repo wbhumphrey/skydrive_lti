@@ -24,39 +24,44 @@
     <li class="current"><a href="#">{{name}}</a></li>
   </ul>
 
-  <div class="large-12 columns">
-    <table id="files-table" style="width: 100%;">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Kind</th>
-          <th>Size (Kb)</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each folders}}
+  {{#if isLoading}}
+    Loading...
+  {{else}}
+
+    <div class="large-12 columns">
+      <table id="files-table" style="width: 100%;">
+        <thead>
           <tr>
-            <td>
-            {{#linkTo 'files' this}}
-              <img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{name}}</span>
-            {{/linkTo}}
-            </td>
-            <td>folder</td>
-            <td>-</td>
-            <td>&nbsp;</td>
+            <th>Name</th>
+            <th>Kind</th>
+            <th>Size (Kb)</th>
+            <th></th>
           </tr>
-        {{/each}}
-        {{#each files}}
-          <tr {{bindAttr class="is_embeddable::disabled"}}>
-            <td><img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{name}}</span></td>
-            <td>{{kind}} <small>{{suffix}}</td>
-            <td>{{size}}</td>
-            <td class="text-right"><button {{action "attach" this}} class="small button"><i class="icon-signin icon-rotate-90 icon-large"></i></button></td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          {{#each folders}}
+            <tr>
+              <td>
+              {{#linkTo 'files' this}}
+                <img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{name}}</span>
+              {{/linkTo}}
+              </td>
+              <td>folder</td>
+              <td>-</td>
+              <td>&nbsp;</td>
+            </tr>
+          {{/each}}
+          {{#each files}}
+            <tr {{bindAttr class="is_embeddable::disabled"}}>
+              <td><img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{name}}</span></td>
+              <td>{{kind}}</td>
+              <td>{{file_size}}</td>
+              <td class="text-right"><button {{action "attach" this}} class="small button"><i class="icon-signin icon-rotate-90 icon-large"></i></button></td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  {{/if}}
   
 {{/if}}

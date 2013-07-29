@@ -3,6 +3,8 @@ require 'json'
 
 module Skydrive
   class Client
+    include ActionView::Helpers::NumberHelper
+
     attr_accessor :client_id, :client_secret, :guid, :client_domain, :token
 
     def initialize(options = {})
@@ -86,6 +88,52 @@ module Skydrive
       end
 
       www_authenticate["Bearer realm"]
+    end
+
+    def get_folder_and_files(uri, folder = Skydrive::Folder.new)
+      data = api_call(uri)
+
+      folder.icon = '/images/icon-folder.png'
+      folder.uri = uri
+      folder.name = data['Name']
+      folder.server_relative_url = data['ServerRelativeUrl']
+      folder.files = []
+      folder.folders = []
+
+      files = api_call(data['Files']['__deferred']['uri'])['results']
+      files.each do |f|
+        new_file = Skydrive::File.new
+        new_file.uri = f['__metadata']['uri']
+        new_file.file_size = number_to_human_size(f['Length'])
+        new_file.name = f['Name']
+        new_file.server_relative_url = f['ServerRelativeUrl']
+        new_file.time_created = Date.parse(f['TimeCreated'])
+        new_file.time_last_modified = Date.parse(f['TimeLastModified'])
+        new_file.title = f['Title']
+        new_file.content_tag = f['ContentTag']
+        new_file.update_content_type_data
+        folder.files << new_file
+      end
+      
+      sub_folders = api_call(data['Folders']['__deferred']['uri'])['results']
+      sub_folders.each do |sf|
+
+        # Non-recursively
+        sub_folder = Skydrive::Folder.new
+        sub_folder.icon = '/images/icon-folder.png'
+        sub_folder.uri = sf['__metadata']['uri']
+        sub_folder.name = sf['Name']
+        sub_folder.server_relative_url = sf['ServerRelativeUrl']
+        sub_folder.files = []
+        sub_folder.folders = []
+
+        # Recursively
+        # sub_folder = get_folder_and_files(sf['__metadata']['uri'])
+
+        folder.folders << sub_folder
+      end
+
+      return folder
     end
 
     def api_call(url)

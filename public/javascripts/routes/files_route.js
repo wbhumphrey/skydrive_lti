@@ -6,15 +6,17 @@ var FilesRoute = AuthenticatedRoute.extend({
   },
 
   serialize: function(model) {
-    return { guid: model.guid };
+    return { uri: model.uri };
   },
 
   setupController: function(controller, model) {
-    var guid = model.guid;
+    var uri = model.uri;
     var skydriveAuthorized = Ember.$.getJSON('/api/v1/skydrive_authorized').then(
       function() {
-        Ember.$.getJSON('/api/v1/files/' + guid).then(function(data) {
+        controller.set('isLoading', true);
+        Ember.$.getJSON('/api/v1/files/' + uri).then(function(data) {
           controller.set('model', data);
+          controller.set('isLoading', false);
         })
         controller.set('authRedirectUrl', null);
       },
@@ -27,8 +29,8 @@ var FilesRoute = AuthenticatedRoute.extend({
 
   events: {
     goToFolder: function(folder) {
-      var guid = folder.guid;
-      this.transitionTo('files', guid);
+      var uri = folder.uri;
+      this.transitionTo('files', uri);
     },
 
     completedAuth: function() {
@@ -39,7 +41,11 @@ var FilesRoute = AuthenticatedRoute.extend({
       }
       ctrl.set('authRedirectUrl', null);
       ctrl.set('popupWindow', null);
-      ctrl.set('model', Ember.$.getJSON('/api/v1/files').then(function(data) { ctrl.set('model', data); }));
+      ctrl.set('isLoading', true);
+      ctrl.set('model', Ember.$.getJSON('/api/v1/files').then(function(data) { 
+        ctrl.set('model', data); 
+        ctrl.set('isLoading', false);
+      }));
     }
   }
 });
