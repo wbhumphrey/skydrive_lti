@@ -15,6 +15,7 @@ gem 'compass'
 gem 'json'
 gem 'rest-client'
 gem 'mimemagic'
+gem 'curb'
 
 group :development, :test do
   gem 'guard-embertools'

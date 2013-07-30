@@ -5,7 +5,7 @@ require('../vendor/ember');
 require('../vendor/ember-model-latest');
 require('../vendor/purl');
 
-var App = window.App = Ember.Application.create();
+var App = window.App = Ember.Application.create({ LOG_TRANSITIONS: true });
 
 module.exports = App;
 

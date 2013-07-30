@@ -20,85 +20,15 @@ class FilesController < ApplicationController
   def index
     uri = params[:uri]
     uri = nil if uri == 'root' || uri == 'undefined'
+    has_parent = true
     unless uri.present?
       personal_url = current_user.skydrive_token.personal_url
       data = client.api_call(personal_url + "_api/web/lists/Documents/")
       uri = data['RootFolder']['__deferred']['uri']
+      has_parent = false
     end
-    puts "URI: #{uri}"
     folder = client.get_folder_and_files(uri)
+    folder.parent_uri = nil unless has_parent
     render json: folder
-
-    # puts "GUID: #{params[:guid]}"
-
-    # if params[:guid] == 'stuvw'
-    #   render json: {
-    #     parent_folder: { guid: 'xyzab' },
-    #     guid: 'stuvw',
-    #     name: 'Shared with Everyone',
-    #     icon: '/images/icon-folder.png',
-    #     folders: [],
-    #     files: [
-    #       {
-    #         guid: 'abcde',
-    #         icon: '/images/icon-word.png',
-    #         name: 'Test.docx',
-    #         kind: 'document',
-    #         suffix: 'docx',
-    #         size: 18290,
-    #         is_embeddable: true,
-    #         url: 'https://instructure-my.sharepoint.com/personal/ericb_instructure_onmicrosoft_com/Documents/Shared with Everyone/Test.docx'
-    #       }
-    #     ]
-    #   }
-    # else
-    #   render json: {
-    #     guid: 'xyzab',
-    #     name: 'My Documents',
-    #     folders: [
-    #       {
-    #         parent_folder: { guid: 'xyzab' },
-    #         guid: 'stuvw',
-    #         name: 'Shared with Everyone',
-    #         icon: '/images/icon-folder.png',
-    #         folders: [],
-    #         files: [
-    #           {
-    #             guid: 'abcde',
-    #             icon: '/images/icon-word.png',
-    #             name: 'Test.docx',
-    #             kind: 'document',
-    #             suffix: 'docx',
-    #             size: 18290,
-    #             is_embeddable: true,
-    #             url: 'https://instructure-my.sharepoint.com/personal/ericb_instructure_onmicrosoft_com/Documents/Shared with Everyone/Test.docx'
-    #           }
-    #         ]
-    #       }
-    #     ],
-    #     files: [
-    #       {
-    #         guid: 'fghij',
-    #         icon: '/images/icon-pdf.png',
-    #         name: 'TerryMooreTranscript.pdf',
-    #         kind: 'document',
-    #         suffix: 'pdf',
-    #         size: 294536,
-    #         is_embeddable: true,
-    #         url: 'https://instructure-my.sharepoint.com/personal/personal/ericb_instructure_onmicrosoft_com/Documents/TerryMooreTranscript04042013.pdf'
-    #       },
-    #       {
-    #         guid: 'klmno',
-    #         icon: '/images/icon-file.png',
-    #         name: 'UtahJS-Logo.eps',
-    #         kind: 'image',
-    #         suffix: 'eps',
-    #         size: 423139,
-    #         is_embeddable: false,
-    #         url: 'https://instructure-my.sharepoint.com/personal/personal/ericb_instructure_onmicrosoft_com/Documents/UtahJS-Logo.eps'
-    #       }
-    #     ]
-    #   }
-    # end
   end
 end

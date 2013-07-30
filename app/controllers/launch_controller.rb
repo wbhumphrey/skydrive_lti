@@ -69,6 +69,14 @@ class LaunchController < ApplicationController
     user.cleanup_api_keys
 
     code = user.session_api_key.oauth_code
+
+    # selection_directive [ 'select_link', 'embed_content' ]
+    #  "ext_content_intended_use"=>"navigation",
+    #  "ext_content_return_types"=>"lti_launch_url",
+    #  "ext_content_return_url"=>"http://localhost:3000/external_content/success/external_tool",
+
+    # binding.pry
+
     redirect_to "/#/launch/#{code}"
   end
 

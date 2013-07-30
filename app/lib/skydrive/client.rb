@@ -1,4 +1,5 @@
 require 'rest_client'
+require 'curb'
 require 'json'
 
 module Skydrive
@@ -95,6 +96,7 @@ module Skydrive
 
       folder.icon = '/images/icon-folder.png'
       folder.uri = uri
+      folder.parent_uri = data['ParentFolder']['__deferred']['uri']
       folder.name = data['Name']
       folder.server_relative_url = data['ServerRelativeUrl']
       folder.files = []
@@ -120,6 +122,7 @@ module Skydrive
 
         # Non-recursively
         sub_folder = Skydrive::Folder.new
+        sub_folder.parent_uri = uri
         sub_folder.icon = '/images/icon-folder.png'
         sub_folder.uri = sf['__metadata']['uri']
         sub_folder.name = sf['Name']
@@ -137,10 +140,13 @@ module Skydrive
     end
 
     def api_call(url)
-      JSON.parse(RestClient.get url, {
-          'Authorization' => "Bearer #{token}",
-          "Accept" => "application/json; odata=verbose"
-      })["d"]
+      url.gsub!("https:/i", "https://i")
+      uri = URI.escape(url)
+      http = Curl.get(uri) do |http|
+        http.headers['Authorization'] = "Bearer #{token}"
+        http.headers['Accept'] = "application/json; odata=verbose"
+      end
+      JSON.parse(http.body_str)["d"]
     end
 
     def get_user

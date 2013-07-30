@@ -16,9 +16,9 @@
 
   <ul class="breadcrumbs">
     <li class="unavailable"><a href="#">{{currentUser.name}}</a></li>
-    {{#if parent_folder}}
+    {{#if parent_uri}}
       <li>
-        {{#linkTo 'files' parent_folder}}&hellip;{{/linkTo}}
+        {{#linkTo 'files' parent_uri}}&hellip;{{/linkTo}}
       </li>
     {{/if}}
     <li class="current"><a href="#">{{name}}</a></li>
@@ -39,11 +39,22 @@
           </tr>
         </thead>
         <tbody>
-          {{#each folders}}
+          {{#if parent_uri}}
             <tr>
               <td>
-              {{#linkTo 'files' this}}
-                <img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{name}}</span>
+                {{#linkTo 'files' parent_uri}}<img src="/images/icon-folder-back.png" class="icon" align="top"> &hellip;{{/linkTo}}
+              </td>
+              <td>-</td>
+              <td>-</td>
+              <td>&nbsp;</td>
+            </tr>
+          {{/if}}
+
+          {{#each folder in folders}}
+            <tr>
+              <td>
+              {{#linkTo 'files' folder}}
+                <img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{folder.name}}</span>
               {{/linkTo}}
               </td>
               <td>folder</td>
