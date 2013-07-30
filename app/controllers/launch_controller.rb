@@ -43,7 +43,7 @@ class LaunchController < ApplicationController
   def basic_launch
     tp = tool_provider
     if tp.lti_errorlog
-      render text: tp.lti_errorlog
+      render text: tp.lti_errorlog, status: 400
       return
     end
 
@@ -54,11 +54,11 @@ class LaunchController < ApplicationController
     end
 
     unless client_domain = tp.get_custom_param('sharepoint_client_domain')
-      render text: "Missing sharepoint client domain"
+      render text: "Missing sharepoint client domain", status: 400
       return
     end
 
-    user = User.where("email = ?", email).first ||
+    user = User.where(email: email).first ||
         User.create!(
             name: tp.lis_person_name_full,
             username: tp.user_id,
@@ -85,7 +85,7 @@ class LaunchController < ApplicationController
     if current_user.valid_skydrive_token?
       render json: {}, status: 201
     else
-      code = current_user.session_api_key.oauth_code
+      code = current_user.api_keys.active.skydrive_oauth.create.oauth_code
       client = Skydrive::Client.new(SHAREPOINT.merge(client_domain: current_user.skydrive_token.client_domain))
       redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
       auth_url = client.oauth_authorize_redirect(redirect_uri, state: code)

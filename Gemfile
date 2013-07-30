@@ -17,10 +17,14 @@ gem 'rest-client'
 gem 'mimemagic'
 gem 'curb'
 
-group :development, :test do
-  gem 'guard-embertools'
-  gem 'pry', require: 'pry'
+group :development do
   gem 'pry-debugger'
+  gem 'guard-embertools'
+end
+
+group :test do
+  gem 'pry-debugger'
+  gem 'rspec-rails'
 end
 
 # To use Jbuilder templates for JSON
