@@ -9,6 +9,15 @@ class ApiKey < ActiveRecord::Base
   scope :active,      -> { where("expired_at >= ?", Time.now) }
   scope :inactive,    -> { where("expired_at < ?", Time.now) }
 
+  def params
+    self.init_params ? JSON.parse(self.init_params) : {}
+  end
+
+  def accepted_extensions
+    extensions = params['ext_content_file_extensions']
+    extensions ? extensions.split(',') : nil
+  end
+
   private
 
   def set_expiry_date

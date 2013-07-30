@@ -47,7 +47,8 @@ class LaunchController < ApplicationController
       return
     end
 
-    unless email = tp.lis_person_contact_email_primary
+    email = tp.lis_person_contact_email_primary
+    unless email.present?
       render text: "Missing email information"
       return
     end
@@ -58,7 +59,7 @@ class LaunchController < ApplicationController
     end
 
     user = User.where("email = ?", email).first ||
-        User.create(
+        User.create!(
             name: tp.lis_person_name_full,
             username: tp.user_id,
             email: email
@@ -68,7 +69,7 @@ class LaunchController < ApplicationController
     user.skydrive_token.update_attributes(client_domain: client_domain) unless user.skydrive_token.client_domain
     user.cleanup_api_keys
 
-    code = user.session_api_key.oauth_code
+    code = user.session_api_key(params).oauth_code
 
     # selection_directive [ 'select_link', 'embed_content' ]
     #  "ext_content_intended_use"=>"navigation",

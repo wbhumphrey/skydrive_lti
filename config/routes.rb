@@ -1,7 +1,10 @@
 Skydrive::Application.routes.draw do
+
+  get '/download/file' => 'files#download', as: :download
+
   scope "api/v1" do
     resources :users, except: [:new, :edit]
-    get 'files/*uri' => 'files#index'
+    get 'files(/*uri)' => 'files#index'
     get 'skydrive_authorized' => 'launch#skydrive_authorized'
   end
 

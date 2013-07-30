@@ -96,9 +96,9 @@ module Skydrive
 
       folder.icon = '/images/icon-folder.png'
       folder.uri = uri
-      folder.parent_uri = data['ParentFolder']['__deferred']['uri']
       folder.name = data['Name']
       folder.server_relative_url = data['ServerRelativeUrl']
+      folder.parse_parent_uri
       folder.files = []
       folder.folders = []
 
@@ -113,7 +113,6 @@ module Skydrive
         new_file.time_last_modified = Date.parse(f['TimeLastModified'])
         new_file.title = f['Title']
         new_file.content_tag = f['ContentTag']
-        new_file.update_content_type_data
         folder.files << new_file
       end
       

@@ -67,7 +67,9 @@
               <td><img {{bindAttr src="icon"}} class="icon" align="top"> <span class="filename">{{name}}</span></td>
               <td>{{kind}}</td>
               <td>{{file_size}}</td>
-              <td class="text-right"><button {{action "attach" this}} class="small button"><i class="icon-signin icon-rotate-90 icon-large"></i></button></td>
+              <td class="text-right">
+                <a {{bindAttr href=homework_submission_url}} class="small button"><i class="icon-signin icon-rotate-90 icon-large"></i></a>
+              </td>
             </tr>
           {{/each}}
         </tbody>

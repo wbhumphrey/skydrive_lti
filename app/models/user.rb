@@ -6,8 +6,12 @@ class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: true
   validates :name, presence: true
 
-  def session_api_key
-    api_keys.active.session.create
+  def session_api_key(params={})
+    ApiKey.create(
+      user_id: self.id,
+      scope: 'session',
+      init_params: params.to_json
+    )
   end
 
   def cleanup_api_keys
