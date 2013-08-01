@@ -3,15 +3,16 @@ class LaunchController < ApplicationController
 
   before_filter :ensure_authenticated_user, only: :skydrive_authorized
 
-  $oauth_creds = {
-      'test' => 'secret'
-  }
-
   def tool_provider
     require 'oauth/request_proxy/rack_request'
 
-    key = params['oauth_consumer_key']
-    secret = $oauth_creds[key]
+    lti_key = LtiKey.where(key: params['oauth_consumer_key']).first
+
+    if lti_key
+      key = lti_key.key
+      secret = lti_key.secret
+    end
+
     tp = IMS::LTI::ToolProvider.new(key, secret, params)
 
     if !key
@@ -128,25 +129,29 @@ class LaunchController < ApplicationController
 
   def xml_config
     # ie http://localhost:9393/config?sharepoint_client_domain=instructure-my.sharepoint.com
-    url = "#{request.protocol}#{request.host_with_port}#{launch_path}"
-    title = "Skydrive Pro"
-    tc = IMS::LTI::ToolConfig.new(:title => title, :launch_url => url)
-    tc.extend IMS::LTI::Extensions::Canvas::ToolConfig
-    tc.description = 'Allows you to pull in documents from Skydrive Pro to canvas'
-    tc.canvas_privacy_public!
-    tc.canvas_domain!(request.host)
-    tc.canvas_icon_url!("#{request.protocol}#{request.host_with_port}/images/skydrive_icon.png")
-    tc.canvas_selector_dimensions!(700,600)
-    tc.canvas_text!(title)
-    tc.canvas_homework_submission!
-    tc.canvas_editor_button!
-    tc.canvas_resource_selection!
-    tc.canvas_account_navigation!
-    tc.canvas_course_navigation!
-    tc.canvas_user_navigation!
-    tc.set_ext_param(
-        IMS::LTI::Extensions::Canvas::ToolConfig::PLATFORM, :custom_fields,
-        {sharepoint_client_domain: params['sharepoint_client_domain']})
-    render xml: tc.to_xml
+    if params['sharepoint_client_domain']
+      url = "#{request.protocol}#{request.host_with_port}#{launch_path}"
+      title = "Skydrive Pro"
+      tc = IMS::LTI::ToolConfig.new(:title => title, :launch_url => url)
+      tc.extend IMS::LTI::Extensions::Canvas::ToolConfig
+      tc.description = 'Allows you to pull in documents from Skydrive Pro to canvas'
+      tc.canvas_privacy_public!
+      tc.canvas_domain!(request.host)
+      tc.canvas_icon_url!("#{request.protocol}#{request.host_with_port}/images/skydrive_icon.png")
+      tc.canvas_selector_dimensions!(700,600)
+      tc.canvas_text!(title)
+      tc.canvas_homework_submission!
+      tc.canvas_editor_button!
+      tc.canvas_resource_selection!
+      tc.canvas_account_navigation!
+      tc.canvas_course_navigation!
+      tc.canvas_user_navigation!
+      tc.set_ext_param(
+          IMS::LTI::Extensions::Canvas::ToolConfig::PLATFORM, :custom_fields,
+          {sharepoint_client_domain: params['sharepoint_client_domain']})
+      render xml: tc.to_xml
+    else
+      render text: 'The sharepoint_client_domain is a required parameter.'
+    end
   end
 end
