@@ -1,4 +1,5 @@
-== SkydrivePro LTI Tool
+SkydrivePro LTI Tool
+======
 
 The SkydrivePro LTI tool provides a method for using LTI to access and return
 SkydrivePro files to a ToolConsumer.  This app uses the unofficial LTI content
@@ -14,24 +15,36 @@ uses tokens and a robust API, along with a front-end heavy ember application to
 provide the stateful experience while avoiding the restrictions associated with
 sessions.
 
-== Getting Started
+
+Getting Started
+-----
 
 1. Install bundler and then install the project gems (http://bundler.io)
-        gem install bundler
-        bundle install
+   ```
+   gem install bundler
+   bundle install
+   ```
 
 2. Install ember tools and build your ember app (https://github.com/rpflorence/ember-tools):
-        cd /path/to/app
-        npm install -g ember-tools
-        ember build
+   ```
+   cd /path/to/app
+   npm install -g ember-tools
+   ember build
+   ```
    Once ember tools is installed you can use guard to watch your ember app and
    build your application on the fly:
-        bundle exec guard
 
-3. Configure your database by copying ./config/database.yml.example to
-   ./config/database.yml and then modifying it to use your database of choice.
+   ```
+   bundle exec guard
+   ```
+
+3. Configure your database by copying config/database.yml.example to
+   config/database.yml and then modifying it to use your database of choice.
    The default configuration uses sqlite and should work out of the box.
-        bundle exec rake db:migrate
+   ```
+   cp config/database.yml.example config/database.yml
+   bundle exec rake db:migrate
+   ```
 
 4. Obtain a client_id and client_secret from microsoft.  This will be used to
    request sharepoint API keys for your users.  You can create your own client ids
@@ -43,24 +56,30 @@ sessions.
    you are running this app in development, your domain and url will most likely
    be `localhost:3000` and `http://localhost:3000/microsoft_oauth` respectively.
 
-   Once you have a client id and secret, copy your ./config/sharepoint.yml.example
-   file to ./config/sharepoint.yml and replace the client_id and client_secret
+   Once you have a client id and secret, copy your config/sharepoint.yml.example
+   file to config/sharepoint.yml and replace the client_id and client_secret
    with your new key and secret.  The guid in sharepoint.yml is a constant
    provided by microsoft and is implementation indepenant.
 
 5. Start the rails server
-        rails server
+   ```
+   rails server
+   ```
 
-6. Do a simple sanity test by navigating to your app in a browser (ie http://locahost:3000).
+6. Do a simple sanity test by navigating to your app in a browser (ie `http://locahost:3000`).
    You should see a simple error informing you that your app was not launched
    correctly.
 
 7. Ensure that the test suite is passing
-        RAILS_ENV=test bundle exec rake db:migrate
-        bundle exec rspec spec/
+   ```
+   RAILS_ENV=test bundle exec rake db:migrate
+   bundle exec rspec spec/
+   ```
 
 8. Generate a consumer key/secret pair to use with this tool.
-        bundle exec script/generate_lti_key
+   ```
+   bundle exec script/generate_lti_key
+   ```
 
 9. Configure your tool consumer to use this tool. (https://www.edu-apps.org/tutorials.html)
    The config XML is located at /config on the LTI app itself. (ie `http://localhost:3000/config`)
