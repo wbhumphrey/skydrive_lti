@@ -7,7 +7,6 @@ gem 'rails', '4'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'rails-api'
-gem 'sqlite3'
 gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'active_model_serializers'
 gem 'ims-lti', :git => 'https://github.com/instructure/ims-lti.git'
@@ -18,14 +17,21 @@ gem 'rest-client'
 gem 'mimemagic'
 gem 'curb'
 
-group :development do
+group :development, :test do
+  gem 'sqlite3'
   gem 'pry-debugger'
+end
+
+group :development do
   gem 'guard-embertools'
 end
 
 group :test do
-  gem 'pry-debugger'
   gem 'rspec-rails'
+end
+
+group :production do
+  gem 'pg'
 end
 
 # To use Jbuilder templates for JSON
