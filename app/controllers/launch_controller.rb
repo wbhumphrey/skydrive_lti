@@ -66,18 +66,11 @@ class LaunchController < ApplicationController
             email: email
         )
 
-    user.skydrive_token = SkydriveToken.create(client_domain: client_domain) unless user.skydrive_token
-    user.skydrive_token.update_attributes(client_domain: client_domain) unless user.skydrive_token.client_domain
+    user.skydrive_token = SkydriveToken.create(client_domain: "#{client_domain}-my.sharepoint.com") unless user.skydrive_token
+    user.skydrive_token.update_attributes(client_domain: "#{client_domain}-my.sharepoint.com") unless user.skydrive_token.client_domain
     user.cleanup_api_keys
 
     code = user.session_api_key(params).oauth_code
-
-    # selection_directive [ 'select_link', 'embed_content' ]
-    #  "ext_content_intended_use"=>"navigation",
-    #  "ext_content_return_types"=>"lti_launch_url",
-    #  "ext_content_return_url"=>"http://localhost:3000/external_content/success/external_tool",
-
-    # binding.pry
 
     redirect_to "/#/launch/#{code}"
   end
@@ -107,24 +100,6 @@ class LaunchController < ApplicationController
     user.skydrive_token.update_attributes(results)
 
     redirect_to "/#/oauth/callback"
-  end
-
-  def backdoor_launch
-    email = params[:email] || 'ericb@instructure.com'
-    name = params[:name] || 'Eric Berry'
-    username = params[:username] || 'ericb'
-    user = User.where("email = ?", email).first ||
-        User.create(
-            name: name,
-            username: username,
-            email: email
-        )
-    user.cleanup_api_keys
-    user.skydrive_token = SkydriveToken.create(client_domain: "instructure.sharepoint.com") unless user.skydrive_token
-    user.skydrive_token.update_attributes(client_domain: "instructure.sharepoint.com") unless user.skydrive_token.client_domain
-
-    code = user.session_api_key.oauth_code
-    redirect_to "/#/launch/#{code}"
   end
 
   def xml_config

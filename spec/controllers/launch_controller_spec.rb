@@ -4,7 +4,7 @@ describe LaunchController do
   let(:email) {'user@email.com'}
   let(:username) {'user'}
   let(:name) {'User'}
-  let(:sharepoint_client_domain) {'test.sharepoint.com'}
+  let(:sharepoint_client_domain) {'test-my.sharepoint.com'}
 
   let(:user) {User.new(email: 'user@email.com', username: 'user', name: 'User')}
 
@@ -12,7 +12,7 @@ describe LaunchController do
     before(:each) do
       tp = IMS::LTI::ToolProvider.new(nil, nil, {})
       tp.lis_person_contact_email_primary = email
-      tp.set_custom_param('sharepoint_client_domain', 'test.sharepoint.com')
+      tp.set_custom_param('sharepoint_client_domain', 'test')
       tp.user_id = username
       tp.lis_person_name_full = name
 
