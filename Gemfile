@@ -16,6 +16,8 @@ gem 'json'
 gem 'rest-client'
 gem 'mimemagic'
 gem 'curb'
+gem 'uglifier'
+gem 'ember-source'
 
 group :development, :test do
   gem 'sqlite3'
