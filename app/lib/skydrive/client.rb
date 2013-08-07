@@ -129,6 +129,11 @@ module Skydrive
         sub_folder.files = []
         sub_folder.folders = []
 
+        #special exception for the special Forms folder in the root directory
+        if sub_folder.parent_uri[/RootFolder$/] && sub_folder.name == 'Forms'
+          next
+        end
+
         # Recursively
         # sub_folder = get_folder_and_files(sf['__metadata']['uri'])
 
