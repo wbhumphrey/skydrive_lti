@@ -49,7 +49,7 @@ class FilesController < ApplicationController
     api_key = ApiKey.where(access_token: params[:token]).first
     if api_key
       user = api_key.user
-      uri = "#{user.skydrive_token.personal_url}_api/Web/GetFileByServerRelativeUrl('#{params[:file]}')/$value"
+      uri = "#{user.skydrive_token.personal_url}_api/Web/GetFileByServerRelativeUrl('#{params[:file].gsub(/ /, '%20')}')/$value"
       tempfile = open(uri, { "Authorization" => "Bearer #{user.skydrive_token.access_token}"})
       send_file tempfile.path, filename: params[:file].split('/').last
     else
