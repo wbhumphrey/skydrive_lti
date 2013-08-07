@@ -85,7 +85,25 @@ Getting Started
    The config XML is located at /config on the LTI app itself. (ie `http://localhost:3000/config`)
    Additionally, this tool config requires a per installation parameter that tells
    the tool which office 365 instance it should be using.  Generally this domain
-   follows the pattern <mydomain>-my.sharepoint.com.  You can verifiy this
-   domain by navigating to your skydrive account via microsoft's web interface
+   follows the pattern <mysubdomain>-my.sharepoint.com.  You can verifiy your
+   subdomain by navigating to your skydrive account via microsoft's web interface
    and checking the domain in the URL.  This domain can be added to the config
-   via GET parameter. (ie `http://localhost:3000/config?sharepoint_client_domain=<mydomain>-my.sharepoint.com`)
+   via GET parameter. (ie `http://localhost:3000/config?sharepoint_client_domain=<mysubdomain>`)
+
+
+Production Notes
+----------
+* The ember application can be packaged for production (or development) use with
+  a rake task
+  ```
+  bundle exec rake build:ember
+  ```
+  This task uses the RAILS_ENV parameter, so when it is called in a development
+  environment it will build the application with development friendly versions
+  of ember and when run in production it will use the production version of ember
+  and minify the application.  If you want to prebuild the application before
+  deploying, or you want to test your production build simply pass in the correct
+  environment:
+  ```
+  bundle exec rake build:ember RAILS_ENV=production
+  ```

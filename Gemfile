@@ -17,7 +17,7 @@ gem 'rest-client'
 gem 'mimemagic'
 gem 'curb'
 gem 'uglifier'
-gem 'ember-source'
+gem 'ember-source', '~>1.0.pre'
 
 group :development, :test do
   gem 'sqlite3'

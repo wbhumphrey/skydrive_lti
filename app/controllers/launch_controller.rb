@@ -103,7 +103,7 @@ class LaunchController < ApplicationController
   end
 
   def xml_config
-    # ie http://localhost:9393/config?sharepoint_client_domain=instructure-my.sharepoint.com
+    # ie http://localhost:9393/config?sharepoint_client_domain=my_subdomain
     if params['sharepoint_client_domain']
       url = "#{request.protocol}#{request.host_with_port}#{launch_path}"
       title = "Skydrive Pro"
