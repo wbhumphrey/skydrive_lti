@@ -119,11 +119,11 @@ class LaunchController < ApplicationController
       tc.canvas_selector_dimensions!(700,600)
       tc.canvas_text!(title)
       tc.canvas_homework_submission!
-      tc.canvas_editor_button!
-      tc.canvas_resource_selection!
-      tc.canvas_account_navigation!
-      tc.canvas_course_navigation!
-      tc.canvas_user_navigation!
+      #tc.canvas_editor_button!
+      #tc.canvas_resource_selection!
+      #tc.canvas_account_navigation!
+      #tc.canvas_course_navigation!
+      #tc.canvas_user_navigation!
       tc.set_ext_param(
           IMS::LTI::Extensions::Canvas::ToolConfig::PLATFORM, :custom_fields,
           {sharepoint_client_domain: params['sharepoint_client_domain']})
