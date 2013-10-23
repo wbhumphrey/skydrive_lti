@@ -130,7 +130,7 @@ module Skydrive
         sub_folder.folders = []
 
         #special exception for the special Forms folder in the root directory
-        if sub_folder.parent_uri[/RootFolder$/] && sub_folder.name == 'Forms'
+        if !folder.parent_uri && sub_folder.name == 'Forms'
           next
         end
 
