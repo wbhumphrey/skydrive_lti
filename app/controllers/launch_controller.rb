@@ -76,13 +76,18 @@ class LaunchController < ApplicationController
   end
 
   def skydrive_authorized
-    if current_user.valid_skydrive_token?
+    skydrive_token = current_user.skydrive_token
+    if skydrive_token && skydrive_token.requires_refresh?
+      results = skydrive_client.refresh_token(skydrive_token.refresh_token)
+      return render json: results if results.key? 'error'
+      skydrive_token.update_attributes(results)
+    end
+
+    if skydrive_token && skydrive_token.is_valid?
       render json: {}, status: 201
     else
       code = current_user.api_keys.active.skydrive_oauth.create.oauth_code
-      client = Skydrive::Client.new(SHAREPOINT.merge(client_domain: current_user.skydrive_token.client_domain))
-      redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
-      auth_url = client.oauth_authorize_redirect(redirect_uri, state: code)
+      auth_url = skydrive_client.oauth_authorize_redirect(skydrive_redirect_uri, state: code)
       render text: auth_url, status: 401
     end
   end
@@ -90,9 +95,7 @@ class LaunchController < ApplicationController
   def microsoft_oauth
     user = ApiKey.trade_oauth_code_for_access_token(params['state']).user
 
-    client = Skydrive::Client.new(SHAREPOINT.merge(client_domain: user.skydrive_token.client_domain))
-    redirect_uri = "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
-    results = client.get_token(redirect_uri, params['code'])
+    results = skydrive_client.oauth_authorize_redirect(skydrive_redirect_uri, state: params['code'])
     return "#{results['error']} - #{results['error_description']}" if results.key? 'error'
 
     results.merge!(personal_url: client.get_user['PersonalUrl'])
@@ -128,5 +131,15 @@ class LaunchController < ApplicationController
     else
       render text: 'The sharepoint_client_domain is a required parameter.'
     end
+  end
+
+  private
+
+  def skydrive_client
+    @skydrive_client ||= Skydrive::Client.new(SHAREPOINT.merge(client_domain: current_user.skydrive_token.client_domain))
+  end
+
+  def skydrive_redirect_uri
+    @skydrive_redirect_uri ||= "#{request.protocol}#{request.host_with_port}#{microsoft_oauth_path}"
   end
 end

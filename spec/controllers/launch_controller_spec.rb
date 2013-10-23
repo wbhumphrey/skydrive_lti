@@ -76,7 +76,7 @@ describe LaunchController do
 
     it "returns a 200 when the skydrive token is valid" do
       user.save
-      user.skydrive_token = SkydriveToken.create(client_domain: sharepoint_client_domain, access_token: 'token')
+      user.skydrive_token = SkydriveToken.create(client_domain: sharepoint_client_domain, access_token: 'token', expires_on: 1.week.from_now)
 
       LaunchController.any_instance.stub(current_user: user)
 

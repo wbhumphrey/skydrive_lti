@@ -19,6 +19,6 @@ class User < ActiveRecord::Base
   end
 
   def valid_skydrive_token?
-    self.skydrive_token && self.skydrive_token.access_token
+    self.skydrive_token && self.skydrive_token.is_valid?
   end
 end
